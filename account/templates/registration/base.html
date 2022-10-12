@@ -65,7 +65,7 @@
             {% if user.is_authenticated %}
                 {% if user == request.user %}
                 <li class="nav-item dropdown dropleft">
-                    <a class="nav-link dropdown-toggle ml-md-4" href="" data-toggle="dropdown" aria-expanded="false">{{ user.username }}
+                    <a class="nav-link dropdown-toggle ml-md-4" href="" data-toggle="dropdown" aria-expanded="false">{{ user.get_full_name }}
                     <img class="rounded-circle img-responsive thumbnail"  height="32px" width="32px" src="{{ user.profile.get_photo_url }}" alt="img"></a>
                     {% endif %}
                     <ul class="nav-item dropdown-menu">
