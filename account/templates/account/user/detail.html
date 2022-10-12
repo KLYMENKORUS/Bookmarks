@@ -16,7 +16,8 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <h2>{{ user.get_full_name }}</h2>
+    <h2 style="border-radius: 5px;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        {{ user.get_full_name }}</h2>
 {% endblock page_header %}
 {% block content %}
     <div style="border-radius: 5px" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -74,7 +75,7 @@
                 </a>
                 {% if request.user != user %}
                     <p style="float: right; color: black; border:3px solid black;
-                    border-radius:26px; padding: 10px 20px; position: relative; top: 20px; right: 10px" href="#">
+                    border-radius:26px; padding: 10px 20px; position: relative; top: 20px; right: 10px">
                         {% if request.user not in user.followers.all %}
                             Not signed
                         {% else %}
@@ -100,7 +101,7 @@
 </div>
     <div class="profile-info">
         {% if user.profile.profile_photo %}
-            {% thumbnail user.profile.get_photo_url "150x150"  as image %}
+            {% thumbnail user.profile.get_photo_url "150x150" as image %}
                 <img src="{{ image.url }}" alt="img"
                      class="rounded-circle account-img img-responsive thumbnail">
             {% endthumbnail %}

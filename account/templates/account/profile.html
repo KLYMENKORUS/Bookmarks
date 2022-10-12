@@ -14,7 +14,8 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <h2>Your Profile</h2>
+    <h2 style="border-radius: 5px;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        Your Profile</h2>
     <div class="content-section">
     <div class="media">
         <img class="rounded-circle account-img img-responsive thumbnail" src="{{ user.profile.get_photo_url }}" alt="img">

@@ -3,7 +3,8 @@
 
 {% block title %}Post & images{% endblock title %}
 {% block page_header %}
-    <h2>News Feed</h2>
+    <h2 style="border-radius: 5px;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        News Feed</h2>
 {% endblock page_header %}
 
 {% block content %}
@@ -14,19 +15,6 @@
                 {% include 'actions/detail.html' %}
             {% endfor %}
         </div>
-          <!--{% for post in posts %}
-              <div style="border: 2px solid #fff; border-radius: 5px; margin-top: 20px;">
-                  <div style="position: relative; left: 20px; top: 10px">
-                      <h2><img class="rounded-circle img-responsive thumbnail"
-                           width="80" height="80" src="{{ post.author.profile.get_photo_url }}" alt="img">
-                          <a class="underline-one" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-                      <em><h6 style="color: black">Published {{ post.publish }} by {{ post.author }}</h6></em>
-                      <img class="img-responsive thumbnail" width="550" height="250" src="{{ post.get_photo_url }}" alt="img">
-                      <p>{{ post.body|truncatewords:30|linebreaks }}</p>
-                  </div>
-              </div>
-          {% endfor %}-->
       </div>
     </div>
-  <!--{% include 'posts/pagination.html' with page=action %}-->
 {% endblock content %}

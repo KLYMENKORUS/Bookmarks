@@ -1,3 +1,6 @@
+{% load static %}
+
+{% if posts %}
 {% for post in posts %}
     <div style="border: 2px solid #fff; border-radius: 5px; margin-top: 20px;">
         <div style="position: relative; left: 20px; top: 10px">
@@ -11,3 +14,18 @@
         </div>
     </div>
 {% endfor %}
+{% else %}
+    {% if user == request.user %}
+    <div style="position: relative; top:100px;">
+        <h3 style="border:3px solid #bbb; border-radius:20px;width:80%; margin-left: 150px;text-align:center;height:200px;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+        <a style="text-decoration: none;color: black;position: relative;top:70px" href="{% url 'posts:new_post' %}">Add a entry
+            <img src="{% static 'images/add_entry.png' %}" style="height: 40px; width: 40px" alt="img"></a></h3>
+    </div>
+    {% else %}
+        <div style="position: relative; top: 100px;">
+        <h3 style="border:3px solid #bbb; border-radius:20px;width:80%; margin-left: 150px;text-align:center;height:200px;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+            <p style="position: relative;top:70px">The user has not added an entry yet</p>
+        </h3>
+    </div>
+    {% endif %}
+{% endif %}
