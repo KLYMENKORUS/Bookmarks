@@ -1,0 +1,136 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'account/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/bookmarks.png' %}" type="image/x-icon">
+    <title>{% block title %}{% endblock title %}</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+</head>
+<body>
+<!--Wave effects-->
+<div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+</div>
+
+<style>
+    .dropdown-menu {
+        background-color: silver;
+        border: 3px solid #f5dd5d;
+        border-radius: 5px;
+        position: relative;
+        right: 50px;
+    }
+    .position-images {
+        width: 25px;
+        height: 25px;
+        position: relative;
+        right: 10px;
+    }
+    .navbar-images {
+        width: 32px;
+        height: 32px;
+        position: relative;
+        right: 15px;
+    }
+</style>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" aria-label="Fourth navbar example">
+    <div class="container-fluid">
+    {% if user.is_authenticated %}
+      <a class="navbar-brand" href="{% url 'posts:post_list' %}">
+          <img src="{% static 'images/bookmarks.png' %}" class="navbar-images" alt="img">Bookmarks</a>
+    {% else %}
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'images/bookmarks.png' %}" class="navbar-images" alt="img">Bookmarks</a>
+    {% endif %}
+      <button class="navbar-toggler toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="bg-ex-fixed"></div>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'users_list'  %}">
+                  <img src="{% static 'images/people.png' %}" width="32" height="32" alt="img" title="People"></a></li>
+      </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                {% if user == request.user %}
+                <li class="nav-item dropdown dropleft">
+                    <a class="nav-link dropdown-toggle ml-md-4" href="" data-toggle="dropdown" aria-expanded="false">{{ user.username }}
+                    <img class="rounded-circle img-responsive thumbnail"  height="32px" width="32px" src="{{ user.profile.get_photo_url }}" alt="img"></a>
+                    {% endif %}
+                    <ul class="nav-item dropdown-menu">
+                        <li><hr class="dropdown-divider">Profile:</li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'profile' %}">
+                            <img class="position-images" src="{% static 'images/profile.png' %}" alt="img">Your profile</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'user_delete' %}">
+                            <img class="position-images" src="{% static 'images/user_delete.png' %}" alt="img">Delete profile</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'logout' %}">
+                            <img class="position-images" src="{% static 'images/log_out.png' %}" alt="img">Log Out</a></li>
+                        <li><hr class="dropdown-divider">User:</li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{ user.get_absolute_url }}">
+                            <img class="position-images" src="{% static 'images/page.png' %}" alt="img">My page</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'posts:new_post' %}">
+                            <img class="position-images" src="{% static 'images/add_entry.png' %}" alt="img">Add entry</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'chat:dialogs' %}">
+                            <img class="position-images" src="{% static 'images/message.png' %}" alt="img">My messages</a></li>
+                        <li><hr class="dropdown-divider">Photo:</li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'images:image_list' %}">
+                            <img class="position-images" src="{% static 'images/my_photos.png' %}" alt="img">My photo's</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'images:create' %}">
+                            <img class="position-images" src="{% static 'images/add_photo.png' %}" alt="img">Add photos</a></li>
+                        <li><hr class="dropdown-divider">Safety:</li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'password_change' %}">
+                            <img class="position-images" src="{% static 'images/password.png' %}" alt="img">Password change</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'password_reset' %}">
+                            <img class="position-images" src="{% static 'images/reset_pass.png' %}" alt="img">Restore password</a></li>
+                    </ul>
+                </li>
+            {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Sign in</a></li>
+            {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main role="main" class="container">
+    <div class="mb-2 border-bottom">
+        {% block page_header %}
+        {% endblock page_header %}
+    </div>
+  <div>
+      {% block content %}{% endblock content %}
+  </div>
+  </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script>
+        var  csrftoken = Cookies.get('csrftoken');
+        function csrfSafeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain){
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(document).ready(function (){
+            {% block domready %}
+            {% endblock  %}
+        });
+    </script>
+</body>
+</html>

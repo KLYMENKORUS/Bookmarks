@@ -1,0 +1,132 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+
+{% block title %}{{ image.title }}{% endblock title %}
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>{{ image.title }}</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <!-- Модальное окно  -->
+<div style="border-radius: 5px" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div style="background-color: #609ab6" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="" method="post" class="form-control-feedback">
+            {% bootstrap_form comment_form  %}
+            {% csrf_token %}
+            <p><input class="button" type="submit" value="Add comment"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+    <em><h6>Published {{ image.created }} by <a style="text-decoration: none" href="{{ image.user.get_absolute_url }}">
+        {{ image.user }}</a></h6></em>
+    <img src="{{ image.get_photo_url }}" alt="img" style="border-radius: 8px; max-width: 400px">
+    {% with total_likes=image.users_like.count users_like=image.users_like.all %}
+      <div style="position: relative; top: 20px">
+      {% if image.user == request.user %}
+          <a class="button" type="submit" href="{% url 'images:image_edit' pk=image.pk %}">Edit detail</a>
+          <a class="button" type="submit" href="{% url 'images:Image_delete' pk=image.pk %}">Delete photo</a>
+          {% endif %}
+      <span class="count">
+            <span class="image-likes">
+                <span class="total">{{ total_likes }}
+                    like{{ total_likes|pluralize }}
+                    {% for user in image.users_like.all %}
+                        <a href="{{ user.get_absolute_url }}"><img src="{{ user.profile.get_photo_url}}" alt="img"
+                                               style="width: 32px; height: 32px; margin-right: -12px" title="{{ user.get_full_name }}"></a>
+                    {% empty %}
+                        Nobody likes this image yet
+                    {% endfor %}
+                </span>
+            </span>
+      </span>
+          <a href="#" type="submit" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
+          {% if request.user not in users_like %}
+            Like
+          {% else %}
+            Unlike
+          {% endif %}
+          </a>
+      <p>{{ image.description|linebreaks }}</p>
+      </div>
+
+    {% endwith %}
+    <!--Comments image-->
+        {% with comments.count as total_comments %}
+            <em style="position: relative; top: 10px"><h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2></em>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div style="border: 2px solid #fff; border-radius: 5px; width: 40%; margin-bottom: 15px; margin-top: 25px">
+            <h5><p style="color: black">
+                <a style="text-decoration: none" href="{{ comment.author.get_absolute_url }}">
+                    <img class="rounded-circle img-responsive thumbnail" width="50" height="50"
+                     style="position: relative; top: 10px; left: 3px" src="{{ comment.author.profile.get_photo_url }}" alt="img">
+                    {{ comment.author.username }}</a></p></h5>
+            <em style="position: relative; bottom: 35px; left: 54px">{{ comment.created }}</em>
+            <h6 style="position: relative; bottom: 30px; left: 54px">{{ comment.body|linebreaks }}</h6>
+                    {% if request.user == comment.author %}
+                        <a class="btn btn-danger" style="position: relative; left: 295px; bottom: 120px"
+                           href="{% url 'images:comment_delete' pk=comment.pk %}">Delete</a>
+                        <a class="btn btn-success" style="position: relative; left: 300px; bottom: 120px"
+                           href="{% url 'images:comment_edit' pk=comment.pk %}">Edit</a>
+                    {% endif %}
+        </div>
+    {% empty %}
+        <em><p>There are no comments yet</p></em>
+    {% endfor %}
+    <a class="button" href="#"  data-toggle="modal" data-target="#exampleModal">Add comment</a>
+    <script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    </script>
+{% endblock content %}
+
+<!--Likes domready-->
+{% block domready %}
+  $('a.like').click(function(e){
+    e.preventDefault();
+    $.post('{% url "images:like" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok')
+        {
+          var previous_action = $('a.like').data('action');
+
+          // toggle data-action
+          $('a.like').data('action', previous_action == 'like' ? 'unlike' : 'like');
+          // toggle link text
+          $('a.like').text(previous_action == 'like' ? 'Unlike' : 'Like');
+
+          // update total likes
+          var previous_likes = parseInt($('span.count .total').text());
+          $('span.count .total').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+        }
+      }
+    );
+  });
+{% endblock %}

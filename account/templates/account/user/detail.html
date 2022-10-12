@@ -1,0 +1,197 @@
+{% extends 'registration/base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %}{{ user.get_full_name }}{% endblock title %}
+
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>{{ user.get_full_name }}</h2>
+{% endblock page_header %}
+{% block content %}
+    <div style="border-radius: 5px" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div style="background-color: #609ab6" class="modal-content">
+      <div class="modal-header">
+          {% if request.user == user %}
+          <h5 class="modal-title" id="exampleModalLabel">My followers</h5>
+          {% else %}
+          <h5 class="modal-title" id="exampleModalLabel">Followers {{ user.username }}</h5>
+          {% endif %}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <style>
+    .followers {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    .username{
+        position: relative;
+        bottom: 40px;
+        left: 90px;
+    }
+    .username-photo {
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        position: relative;
+        top: 10px;
+        left: 10px;
+    }
+    .border-follow {
+        margin-bottom:20px;
+        border:2px solid #fff;
+        border-radius:5px;
+        width: 100%;
+    }
+    </style>
+    <div class="followers">
+    {% if user.followers.all %}
+        {% for user in user.followers.all  %}
+            <div class="border-follow">
+                <a href="{{ user.get_absolute_url }}">
+                    {% if user.profile.profile_photo %}
+                        {% thumbnail user.profile.get_photo_url "70x70" as image %}
+                            <img class="username-photo" src="{{ image.url }}" alt="photo">
+                        {% endthumbnail %}
+                    {% else%}
+                        <img class="username-photo" src="{% static 'images/default.jpg' %}" alt="photo">
+                    {% endif %}
+                </a>
+                {% if request.user != user %}
+                    <p style="float: right; color: black; border:3px solid black;
+                    border-radius:26px; padding: 10px 20px; position: relative; top: 20px; right: 10px" href="#">
+                        {% if request.user not in user.followers.all %}
+                            Not signed
+                        {% else %}
+                            Signed
+                        {% endif %}
+                    </p>
+                    <a style="position: relative; top: 13px; left: 200px; text-decoration: none" href="{% url 'chat:create_dialog' user.id %}">
+                        <img src="{% static 'images/send_message.png' %}" width="50" height="50" alt="img" title="Message"></a>
+                {% endif %}
+                <div class="username">
+                    <a href="{{ user.get_absolute_url }}" class="title underline-one">
+                        {{ user.get_full_name }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h3 style="position: relative; right: 225px">There are no subscribers.</h3>
+    {% endif %}
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="profile-info">
+        {% if user.profile.profile_photo %}
+            {% thumbnail user.profile.get_photo_url "150x150"  as image %}
+                <img src="{{ image.url }}" alt="img"
+                     class="rounded-circle account-img img-responsive thumbnail">
+            {% endthumbnail %}
+        {% else %}
+            <img src="{% static 'images/default.jpg' %}" alt="photo"
+                 class="rounded-circle account-img img-responsive thumbnail">
+        {% endif %}
+    </div>
+    {% with total_followers=user.followers.count %}
+        {% if user == request.user %}
+            <a style="text-decoration: none" data-toggle="modal" data-target="#exampleModal" href="#"><span class="count" style="color:#aaa; border:3px solid #bbb; border-radius:26px; padding: 10px 20px; position: relative; top: 20px">
+                <span class="total">{{ total_followers }}</span>
+                    My follower{{ total_followers|pluralize }}
+            </span></a>
+        {% else %}
+            <a style="text-decoration: none" data-toggle="modal" data-target="#exampleModal" href="#"><span class="count" style="color:#aaa; border:3px solid #bbb; border-radius:26px; padding: 10px 20px; position: relative; top: 20px">
+                <span class="total">{{ total_followers }}</span>
+                    follower{{ total_followers|pluralize }}
+            </span></a>
+            <a style="color:#aaa; border:3px solid #bbb; border-radius:26px; padding: 10px 20px; position: relative; top: 20px; text-decoration: none"
+               href="{% url 'chat:create_dialog' user.id %}">Message</a>
+            {% if request.user not in user.followers.all %}
+                <a style="float: right; position: relative; top: 5px;" href="#" data-id="{{ user.id }}" data-create="message" id="subscribe"
+                   data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+                   class="button" type="button">Follow</a>
+            {% else %}
+                <a style="float: right; position: relative; top: 5px;" href="#" data-id="{{ user.id }}" data-create="message" id="subscribe"
+                   data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+                   class="button" type="button">Unfollow</a>
+            {% endif %}
+        {% endif %}
+        <div id="image-list" class="image-container">
+            {% include 'images/list_ajax.html' with images=img.all%}
+        </div>
+        <div>
+            {% include 'posts/posts_ajax.html' with posts=user.posts_created.all %}
+        </div>
+
+    {% endwith %}
+    <script>
+
+    </script>
+{% endblock content %}
+
+{% block domready %}
+  $('a.button').click(function(e){
+    e.preventDefault();
+    $.post('{% url "user_follow" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok') {
+          var previous_action = $('a.button').data('action');
+
+          // toggle data-action
+          $('a.button').data('action',
+            previous_action == 'follow' ? 'unfollow' : 'follow');
+          // toggle link text
+          $('a.button').text(
+            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+          // update total followers
+          var previous_followers = parseInt(
+            $('span.count .total').text());
+          $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+        }
+      }
+    );
+  });
+
+    // добавляем в DOM контейнер для сообщений
+    if (!document.querySelector('.messages')) {
+      const container = document.createElement('div');
+      container.classList.add('messages');
+      container.style.cssText = 'position: fixed; top: 15px; right: 15px; width: 250px;';
+      document.body.appendChild(container);
+    }
+
+    // получаем контейнер
+    const messages = document.querySelector('.messages');
+
+    // при нажатию на кнопку добавляем в контейнер alert
+    document.querySelector('#subscribe').addEventListener('click', (e) => {
+      const messageText = e.target.textContent === 'Follow' ? 'Your follow {{ user.username }}!' : 'Your unfollow {{ user.username }}';
+      e.target.textContent = e.target.textContent === 'Follow' ? 'Unfollow' : 'Follow';
+      const message = document.createElement('div');
+      message.className = 'alert alert-success alert-dismissible fade show';
+      message.innerHTML = `${messageText}<button type="button" class="close" data-dismiss="alert">×</button>`;
+      messages.appendChild(message);
+    });
+
+{% endblock %}

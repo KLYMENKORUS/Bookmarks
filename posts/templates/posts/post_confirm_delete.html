@@ -1,0 +1,21 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Delete entry{% endblock title %}
+
+{% block content %}
+    <div class="">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+                <h4>Are you sure you want to delete the Post?</h4>
+            </legend>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-danger mr-3" type="submit">Yes, Delete</button>
+            <a href="{% url 'posts:post_detail' pk=post.pk %}" class="btn btn-info">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

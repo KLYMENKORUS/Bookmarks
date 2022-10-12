@@ -1,0 +1,32 @@
+<style>
+    .user-pos {
+        position: relative;
+        bottom: 45px;
+        left: 55px;
+    }
+    .style-panel {
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    .message-style {
+        background-color: darkgrey;
+        border-radius: 5px;
+        width: 95%;
+    }
+</style>
+
+{% load tz %}
+<div class="list-group-item style-panel {% if not message_item.is_read %}unread{% endif %}" style="box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+    <a href="{{ message_item.author.get_absolute_url }}">
+        <img class="rounded-circle" width="50" height="50" src="{{ message_item.author.profile.get_photo_url }}" alt="img"></a>
+    <div class="user-pos">
+        <ul class="list-inline">
+            <li>
+                <strong class="list-group-item-heading">
+                    <a href="{{ message_item.author.get_absolute_url }}" style="text-decoration: none">{{ message_item.author.username }}</a></strong>
+            </li>
+            <li style="float: right; position: relative; right: 50px; bottom: 25px" class="text-muted"><small>{{ message_item.pub_date }}</small></li>
+        </ul>
+        <div class="message-style">{{ message_item.message|safe }}</div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+{% extends 'registration/base.html' %}
+{% load static %}
+
+{% block title %}Photo's{% endblock title %}
+
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>Your photo's</h2>
+{% endblock page_header %}
+
+{% block content%}
+    <div>
+        <div>
+            {% for image in images %}
+                <a href="{{ image.get_absolute_url }}"><img class="img-list" src="{{ image.get_photo_url }}" alt="img"></a>
+            {% endfor %}
+        </div>
+    </div>
+    {% if images %}
+        {% include 'images/pagination.html' with page=images %}
+    {% else %}
+        <h4 style="border-radius: 5px; text-align: center; background-color: white;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+            You don't have any photos yet, add a photo<a style="text-decoration: none" href="{% url 'images:create' %}">
+            <img src="{% static 'images/add_photo.png' %}" alt="img" width="40" height="40"></a></h4>
+    {% endif %}
+
+{% endblock content %}
+
+<!--{% block domready %}
+  var page = 1;
+  var empty_page = false;
+  var block_request = false;
+
+  $(window).scroll(function() {
+    var margin = $(document).height() - $(window).height() - 200;
+    if  ($(window).scrollTop() > margin && empty_page == false && block_request == false) {
+     block_request = true;
+      page += 1;
+      $.get('?page=' + page, function(data) {
+       if(data == '') {
+          empty_page = true;
+        }
+        else {
+          block_request = false;
+          $('#image-list').append(data);
+        }
+      });
+    }
+  });
+{% endblock %}-->

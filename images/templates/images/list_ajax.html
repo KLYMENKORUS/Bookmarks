@@ -1,0 +1,9 @@
+
+<div>
+    {%for image in images %}
+      <a href="{{ image.get_absolute_url }}">
+          <img class="image1" src="{{ image.get_photo_url }}" alt="img"
+          style="margin-right: 20px; margin-bottom: 20px; border-radius: 10%; max-width: 200px; max-height: 150px"></a>
+    {% endfor %}
+</div>
+

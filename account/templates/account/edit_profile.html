@@ -1,0 +1,25 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+
+{% block title %}Editing profile{% endblock %}
+{% block page_header %}
+    <h2>Edit your profile</h2>
+    <div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img img-responsive thumbnail" src="{{ user.profile.get_photo_url }}" alt="img">
+{% endblock page_header %}
+
+{% block content %}
+    <div class="media-body">
+    <p>You can edit your profile using the following form:</p>
+    <form action="." method="post" enctype="multipart/form-data">
+      {% bootstrap_form user_form %}
+      {% bootstrap_form profile_form %}
+      {% csrf_token %}
+    <p><input class="button" type="submit" value="Save changes"></p>
+    </form>
+    </div>
+    </div>
+    </div>
+{% endblock content %}

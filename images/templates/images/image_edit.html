@@ -1,0 +1,16 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Photo detail editing{% endblock title %}
+{% block page_header %}
+    <h2>Photo detail editing</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <p>Please fill out the form below to edit details:</p>
+    <form method="post" class="form-control-feedback" enctype="multipart/form-data">
+      {% bootstrap_form edit_form_image %}
+      {% csrf_token %}
+      <button class="button" name="submit">Save</button>
+    </form>
+{% endblock content %}

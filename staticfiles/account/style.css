@@ -1,0 +1,394 @@
+/* background effects */
+body {
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: auto;
+    background: linear-gradient(
+        315deg,
+        rgba(101, 0, 94, 1) 3%,
+        rgba(60, 132, 206, 1) 38%,
+        /*rgba(48, 238, 226, 1) 68%,*/
+        rgba(225, 25, 25, 1) 98%
+    );
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+}
+@keyframes gradient {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 50% 50%;
+    }
+    100% {
+        background-position: 0 0 ;
+    }
+}
+.wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 1000% 0 0 ;
+    position: fixed;
+    width: 200%;
+    height: 12em;
+    animation: wave 15s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.9;
+}
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s reverse infinite;
+    opacity: 0.9;
+}
+@keyframes wave {
+    2% {
+        transform: translateX(1%);
+    }
+    25% {
+        transform: translateX(-25%);
+    }
+    50% {
+        transform: translateX(-50%);
+    }
+    75% {
+        transform: translateX(-25%);
+    }
+    100% {
+        transform: translateX(1%);
+    }
+}
+/* background effects */
+
+/* login */
+.login-form {
+    float: left;
+    position: relative;
+    left: 260px;
+
+}
+
+/* registration */
+.registration-text {
+    text-align: center;
+}
+.registration {
+    float: left;
+    margin-left: 325px;
+}
+/* button login*/
+.button {
+    display: inline-block;
+    color: #fff;
+    padding: 10px 20px;
+    border: 3px solid
+    #3c67e3;
+    border-radius: 10px;
+    background-color: rgba(28, 28, 28, 0);
+}
+.button:hover {
+    animation: pulsate 2s ease-in-out;
+    text-decoration: none;
+}
+@keyframes pulsate {
+    0% {
+        box-shadow:
+        0 0 25px greenyellow,
+        0 0 25px #4e00c2;
+    }
+}
+/*link*/
+.underline-one {
+    color: #00bfff; /* Цвет обычной ссылки */
+    position: relative;
+    cursor: pointer;
+    text-decoration: none; /* Убираем подчеркивание */
+    -webkit-text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+    -moz-text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+    text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+}
+.underline-one {
+	color: #00bfff; /* Цвет обычной ссылки */
+    position: relative;
+    cursor: pointer;
+    text-decoration: none; /* Убираем подчеркивание */
+    -webkit-text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+    -moz-text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+    text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+}
+.underline-one:after {
+	content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    width: 0;
+    height: 2px; /* Высота линии */
+    background-color: black; /* Цвет подчеркивания при исчезании линии*/
+    transition: width 0.7s; /* Время эффекта */
+}
+
+.underline-one:hover:after {
+	content: "";
+    width: 100%;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px; /* Высота линии */
+    background-color: red; /* Цвет подчеркивания при появлении линии*/
+    transition: width 0.7s;  /* Время эффекта */
+}
+.underline-one:hover {
+    text-decoration: none;
+}
+
+.content-section {
+    padding: 30px 250px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: #6f94c6;
+    margin-bottom: 20px;
+}
+/*profile-img*/
+.account-img {
+    height: 150px;
+    width: 150px;
+    margin-right: 20px;
+    margin-bottom: 16px
+}
+.account-heading {
+    font-size: 2.5em;
+}
+
+/* messages */
+ul.messages {
+    margin:10px 100px;
+    padding:0;
+    list-style-type: none;
+}
+ul.messages li.success,
+ul.messages li.warning,
+ul.messages li.error,
+ul.messages li.info {
+    margin:0;
+    padding:14px 20px;
+    list-style:none;
+    color:#fff;
+    border-radius: 5px;
+}
+
+ul.messages li.success { background:#81ce81; }
+ul.messages li.success a { color:#0ac33e; }
+
+ul.messages li.error { background:#a30029; color:#e9828e; }
+ul.messages li.error a { color:#e9828e; }
+
+ul.messages li.info { background:#faffae; color:#696b4e; }
+ul.messages li.info a { color:#1586de; }
+
+ul.messages li.warning { background:#de9404; }
+ul.messages li.warning a { color:#f49000; }
+
+ul.messages li a.close {
+    margin:0;
+    float:right;
+    opacity:1;
+    border:0;
+    box-shadow:none;
+    text-shadow:none;
+}
+/* bookmark-form*/
+.bookmark-form {
+    float: left;
+    position: relative;
+    left: 200px;
+}
+/* images */
+.image-preview {
+    max-width:300px;
+    float: left;
+    margin:20px 20px 20px 0;
+    position: relative;
+    left: 100px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+}
+.img-info div {
+    padding:20px 0;
+    overflow:auto;
+}
+.count {
+    color:#aaa;
+    border:3px solid #bbb;
+    border-radius:26px;
+    padding:10px 20px;
+    margin: 20px 10px;
+}
+a.like, a.follow { float:right; margin-top:-8px; }
+
+#image-list { overflow:auto; }
+
+.image1 {
+    opacity: 0.6;
+    cursor: pointer;
+}
+.image1:hover {
+    opacity: 1;
+}
+
+#image-list img { width:220px; height:220px; }
+#image-list .info { padding:10px; }
+#image-list .info a { color:#333; }
+.image-likes div {
+    float:left;
+    width:auto;
+    padding:5px;
+    text-align:center;
+}
+.image-likes img {
+    width:120px;
+    height:120px;
+    border-radius:50%;
+}
+/* dashboard */
+.text-shadow {
+    -webkit-text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+    -moz-text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+    text-shadow: 8px -8px 5px rgba(0, 0, 0, 0.31);
+}
+
+/* pagination */
+.pagination {
+    margin:40px 0;
+    font-weight:bold;
+}
+/* position-img */
+
+.column1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+    right: 230px;
+
+}
+.img-list {
+    max-width: 300px;
+    border-radius: 10px;
+    margin-left: 15px;
+    width: 250px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+.img-list:hover {
+    opacity: 1;
+}
+
+/* efect-img*/
+.img:hover {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+/* post-img-list */
+.post-img-list {
+    position: relative;
+    bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.images-list {
+    max-width: 150px;
+    max-height: 150px;
+    height: 100px;
+    opacity: 0.6;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px solid grey;
+}
+.images-list:hover {
+    opacity: 1;
+}
+.add-images {
+    position: relative;
+    left: 8px;
+    bottom: 13px;
+    display: inline-block;
+    color: #fff;
+    padding:1px 250px;
+    border: 2px solid #3c67e3;
+    border-radius: 10px;
+    background-color: rgba(28, 28, 28, 0);
+}
+.add-images:hover {
+    animation: pulsate 2s ease-in-out;
+    text-decoration: none;
+}
+.bio {
+    background: #fff;
+    border: 2px solid grey;
+    border-radius: 5px;
+    position: relative;
+    bottom: 100px;
+}
+/* users */
+#people-list img {
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    margin-bottom:20px;
+}
+#people-list .user {
+    width:180px;
+    float:right;
+    overflow:auto;
+    padding:10px;
+}
+/*#people-list .info { text-align:center; }*/
+img.user-detail {
+    border-radius:50%;
+    float:left;
+}
+.profile-info {
+    float:left;
+    overflow:auto;
+    margin-right:20px;
+}
+.image-container { margin-top:40px; }
+
+/* actions */
+.action {
+    clear:both;
+    overflow:auto;
+}
+.action .images {
+    float:left;
+    margin:0 10px 10px 0;
+}
+.action .date {
+    font-style:italic;
+    color:#ccc;
+}
+

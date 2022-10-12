@@ -1,0 +1,20 @@
+{% extends 'registration/base.html' %}
+
+{% block title %}Welcome{% endblock %}
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock page_header %}
+{% block content %}
+    <h2>Welcome {{ form.first_name }}!</h2>
+    <p>Your account has been successfully created.
+        Now you can <a href="{% url 'login' %}" class="underline-one">log in</a></p>
+{% endblock content%}

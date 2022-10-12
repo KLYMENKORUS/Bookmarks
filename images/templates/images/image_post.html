@@ -1,0 +1,5 @@
+<div class="post-img-list">
+    {% for image in latest_images %}
+        <a href="{{ image.get_absolute_url }}"><img class="images-list" src="{{ image.get_photo_url }}" alt="img"></a>
+    {% endfor %}
+</div>

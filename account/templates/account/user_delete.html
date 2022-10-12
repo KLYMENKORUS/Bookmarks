@@ -1,0 +1,19 @@
+{% extends 'registration/base.html' %}
+
+
+{% block title %}Deleting a user{% endblock title %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+                <h4>Delete your profile <b>{{ user.get_full_name }}</b> and all actions related to it?</h4>
+            </legend>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-danger mr-3" type="submit">Yes, Delete</button>
+            <a href="{{ user.get_absolute_url }}" class="btn btn-info">Cancel</a>
+        </div>
+    </form>
+{% endblock content %}

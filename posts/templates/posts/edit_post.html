@@ -1,0 +1,15 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Editing entry{% endblock title %}
+{% block page_header %}
+    <h2>Editing entry</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <form method="post" class="form-control-feedback" enctype="multipart/form-data">
+      {% bootstrap_form edit_form %}
+      {% csrf_token %}
+      <button class="button" name="submit">Save</button>
+    </form>
+{% endblock content %}

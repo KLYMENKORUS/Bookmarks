@@ -1,0 +1,13 @@
+{% for post in posts %}
+    <div style="border: 2px solid #fff; border-radius: 5px; margin-top: 20px;">
+        <div style="position: relative; left: 20px; top: 10px">
+            <h2><img class="rounded-circle img-responsive thumbnail"
+                     width="80" height="80" src="{{ post.author.profile.get_photo_url }}" alt="img">
+                <a class="underline-one" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+            <em><h6 style="color: black">Published {{ post.publish }} by {{ post.author }}</h6></em>
+            <a href="{{ post.get_absolute_url }}"><img style="border-radius: 10px" class="img-responsive thumbnail" width="550"
+                                                       height="250" src="{{ post.get_photo_url }}" alt="img"></a>
+            <p>{{ post.body|truncatewords:30|linebreaks }}</p>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,23 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}New entry{% endblock title %}
+
+{% block page_header %}
+    <h2><em>Add entry</em></h2>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="content-section">
+    <div class="media">
+        <div class="media-body">
+            <p>Please add an entry using the following form:</p>
+            <form action="{% url 'posts:new_post' %}" method="post" class="form-control-feedback" enctype="multipart/form-data">
+                {% bootstrap_form form %}
+                {% csrf_token %}
+                <button name="submit" class="button">Add a new entry</button>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock content %}

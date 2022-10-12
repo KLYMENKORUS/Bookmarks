@@ -1,0 +1,37 @@
+{% extends "registration/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+  <h2 class="registration-text">Create an account</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="border" style="border-radius: 5px; background-color: #6f94c6">
+      <div class="media">
+        <div class="media-body">
+            <p class="registration-text">Please, sign up using the following form:</p>
+            <form  method="post" action="{% url 'registration' %}" class="form-control-feedback registration">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button name="submit" class="button">Create my account</button>
+                    <input type="hidden" name="next" value="{% url 'register_done' %}" />
+                {% endbuttons %}
+            </form>
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}

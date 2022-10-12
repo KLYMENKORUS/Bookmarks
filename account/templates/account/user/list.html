@@ -1,0 +1,72 @@
+{% extends 'registration/base.html' %}
+{% load thumbnail %}
+{% load static %}
+
+
+{% block title %}People{% endblock title %}
+
+{% block page_header %}
+    <h2>People</h2>
+{% endblock page_header %}
+{% block content %}
+    <style>
+        .username {
+            position: relative;
+            bottom: 60px;
+            left: 120px;
+        }
+        .followers {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-left: 225px;
+        }
+        .username-photo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            top: 10px;
+            left: 10px;
+        }
+        .border-follow {
+            margin-bottom:20px;
+            border:2px solid #fff;
+            border-radius:5px;
+            width: 650px;
+        }
+    </style>
+    <div class="followers">
+        {% for user in users %}
+        <div class="border-follow">
+            <a href="{{ user.get_absolute_url }}">
+                {% if user.profile.profile_photo %}
+                    {% thumbnail user.profile.get_photo_url "100x100" as image %}
+                        <img class="username-photo" src="{{ image.url }}" alt="photo">
+                    {% endthumbnail %}
+                {% else%}
+                    <img class="username-photo" src="{% static 'images/default.jpg' %}" alt="photo">
+                {% endif %}
+            </a>
+        {% if request.user != user %}
+            <p style="float: right; color: black; border:3px solid black;
+            border-radius:26px; padding: 10px 20px; position: relative; top: 22px; right: 10px" href="#">
+                {% if request.user not in user.followers.all %}
+                    Not signed
+                {% else %}
+                    Signed
+                {% endif %}
+                </p>
+            <a style="position: relative; left: 350px; text-decoration: none" href="{% url 'chat:create_dialog' user.id %}">
+                <img src="{% static 'images/send_message.png' %}" alt="img" height="50" width="50" title="Message">
+            </a>
+        {% endif %}
+            <div class="username">
+                <a href="{{ user.get_absolute_url }}" class="title underline-one">
+                    {{ user.get_full_name }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{%  endblock content %}

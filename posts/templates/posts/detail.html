@@ -1,0 +1,86 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock title %}
+
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock page_header %}
+
+{% block content %}
+        <!-- Модальное окно 1 -->
+<div style="border-radius: 5px" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div style="background-color: #609ab6" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="." method="post" class="form-control-feedback">
+                {% bootstrap_form comment_form %}
+                {% csrf_token %}
+                <p><input class="button" type="submit" value="Add comment"></p>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+    {% if post.author == request.user %}
+        <a class="button" style="float: right" type="submit" href="{% url 'posts:post_delete' pk=post.pk %}">Delete entry</a>
+        <p><a class="button" style="float: right; margin-right: 20px"
+              type="submit" href="{% url 'posts:post_edit' pk=post.pk %}">Edit entry</a></p>
+    {% endif %}
+    <h1><img class="rounded-circle img-responsive thumbnail" width="80" height="80"
+             src="{{ post.author.profile.get_photo_url }}" alt="img"><em style="margin-left: 15px">{{ post.title }}</em></h1>
+    <em><h6 style="color: black">Published {{ post.publish }} by
+        <a style="text-decoration: none" href="{{ post.author.get_absolute_url }}">{{ post.author }}</a></h6></em>
+    <img class="img-responsive thumbnail" width="550" height="250"
+         style="float: right; position: relative; bottom: 25px; border-radius: 5px" src="{{ post.get_photo_url }}" alt="img">
+    <p>{{ post.body|linebreaks }}</p>
+
+    <!--Button share this post-->
+
+    {% with comments.count as total_comments %}
+      <em><h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2></em>
+    {% endwith %}
+
+    {% for comment in comments %}
+      <div style="border: 2px solid #fff; border-radius: 5px; width: 40%; margin-bottom: 15px">
+        <h5><p style="color: black">
+            <a style="text-decoration: none" href="{{ comment.user.get_absolute_url }}">
+                <img class="rounded-circle img-responsive thumbnail" width="50" height="50"
+                 style="position: relative; top: 10px; left: 3px" src="{{ comment.user.profile.get_photo_url }}" alt="img">
+                {{ comment.user.username }}</a></p></h5>
+          <em style="position: relative; bottom: 35px; left: 54px">{{ comment.created }}</em>
+      <h6 style="position: relative; bottom: 30px; left: 54px">{{ comment.body|linebreaks }}</h6>
+          {% if request.user == comment.user %}
+              <a class="btn btn-danger" style="position: relative; left: 295px; bottom: 120px"
+                 href="{% url 'posts:comment_delete' comment.pk %}">Delete</a>
+              <a class="btn btn-success" style="position: relative; left: 300px; bottom: 120px"
+                 href="{% url 'posts:comment_edit' comment.pk %}">Edit</a>
+          {% endif %}
+      </div>
+    {% empty %}
+        <em><p>There are mo comments yet</p></em>
+    {% endfor %}
+    <a class="button" href="#"  data-toggle="modal" data-target="#exampleModal">Add comment</a>
+    <script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    </script>
+{% endblock content %}
+

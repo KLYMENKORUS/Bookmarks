@@ -1,0 +1,17 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Edited comment{% endblock title %}
+{% block page_header %}
+    <h2>Edited comment</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <div>
+        <form action="." method="post" class="form-control-feedback">
+            {% bootstrap_form form %}
+            {% csrf_token %}
+            <p><input class="button" type="submit" value="Save"></p>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,54 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Messages {{ user.username }}{% endblock title %}
+
+{% block content %}
+    {% if not chat %}
+        <div class="panel panel-body">
+            <h6 style="border-radius: 5px; text-align: center; background-color: white;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                Невозможно начать беседу. Не найден пользователь или вы не имеете доступа к данной беседе.</h6>
+        </div>
+    {% else %}
+        {% if chat.message_set.count == 0 %}
+            <h4 style="border-radius: 5px; text-align: center; background-color: white;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                You don't have a shared chat history. Write first.</h4>
+            <div id="message_form" style="border-radius: 5px; margin-top: 20px;">
+                <form id="message_form" class="panel panel-body" method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="button" onclick="return ETextEditor.validateForm('message-form')">
+                        <span class="bp3-icon bp3-icon-comment"></span>Send</button>
+                </form>
+            </div>
+        {% else %}
+        {% load tz %}
+            {% if chat %}
+                <div class="panel" id="messages">
+                    <div id="innerMessages">
+                    {% with user_message=chat.message_set.first %}
+                        {% if user_message.author != request.user %}
+                            <p style="border-radius: 5px; text-align: center; background-color: white;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                                Correspondence with {{ user_message.author.get_full_name }}</p>
+                        {% else %}
+                        <p style="border-radius: 5px; text-align: center; background-color: white;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                            You are the author of this correspondence</p>
+                        {% endif %}
+                        {% for message in chat.message_set.all %}
+                            {% include 'chat/message.html' with message_item=message  %}
+                        {% endfor %}
+                    </div>
+                    {% endwith %}
+                </div>
+            {% endif %}
+            <div id="message_form" style="border-radius: 5px; margin-top: 20px">
+                <form id="message_form" class="panel panel-body" method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="button" onclick="return ETextEditor.validateForm('message-form')">
+                        <span class="bp3-icon bp3-icon-comment"></span>Send</button>
+                </form>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock content %}

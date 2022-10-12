@@ -1,0 +1,66 @@
+{% extends 'registration/base.html' %}
+{% load chat_tag %}
+{% load bootstrap4 %}
+
+{% block title %}Dialogs {{ user.get_full_name }}{% endblock title %}
+{% block page_header %}
+    {% if messages %}
+        <ul class="alert alert-dismissible messages fade show">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2 style="border-radius: 5px; text-align: center; background-color: white;box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">Your dialogs</h2>
+{% endblock %}
+
+{% block content %}
+    <div class="panel">
+        {% load tz %}
+        {% for chat in chats %}
+            {% if chat.message_set.count != 0 %}
+                {% with last_message=chat.message_set.last %}
+                    {% with message_author=chat.message_set.first%}
+                    {% get_companion user chat as companion %}
+                    <div style="margin-bottom: 20px; border-radius: 5px; background-color: white; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                        <a class=" {% if companion == last_message.author and not last_message.is_read %}unread{% endif %}" href="{{ chat.get_absolute_url }}"
+                           style="text-decoration: none;">
+                            <img class="rounded-circle" src="{{ message_author.author.profile.get_photo_url }}"
+                                 alt="img" style="width: 50px; height: 50px; position: relative; top: 5px; left: 2px">
+                            <div style="position: relative; left: 55px; bottom: 40px;">
+                                <ul class="list-inline">
+                                    <li>
+                                        <strong>{{ message_author.author.get_full_name }}</strong></li>
+                                    <li style="float: right; position: relative; right: 60px; bottom: 25px" class="text-muted"><small>{{ last_message.pub_date }}</small></li>
+                                </ul>
+                                {% if companion != last_message.author %}
+                                    <div style="background-color: darkgrey; width: 93%; border-radius: 5px">
+                                        <img class="rounded-circle" style="height: 32px; width: 32px; position: relative; top: 10px; left: 10px"
+                                             src="{{ last_message.author.profile.get_photo_url }}" alt="img">
+                                    <p style="position: relative; bottom: 15px; left: 50px">{{ last_message.author.get_full_name }}</p>
+                                        <div style="position: relative; bottom: 25px; left: 50px;"
+                                             class="{% if not last_message.is_read %}unread{% endif %}">{{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                                    </div>
+                                {% else %}
+                                    <div style="background-color: darkgrey; width: 93%; border-radius: 5px">
+                                        <img class="rounded-circle" style="height: 32px; width: 32px; position: relative; top: 10px; left: 10px"
+                                             src="{{ last_message.author.profile.get_photo_url }}" alt="img">
+                                    <p style="position: relative; bottom: 15px; left: 50px">{{ last_message.author.get_full_name }}</p>
+                                        <div style="position: relative; bottom: 25px; left: 50px;"
+                                             class="{% if not last_message.is_read %}unread{% endif %}">{{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                                    </div>
+                                {% endif %}
+                            <a style="float: right; position: relative; right: 80px; top: 10px; text-decoration: none"
+                                    class="text-danger" href="{% url 'chat:chat_delete' chat.pk %}">Delete a chat</a>
+                            </div>
+                        </a>
+                    </div>
+                        {% endwith %}
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}

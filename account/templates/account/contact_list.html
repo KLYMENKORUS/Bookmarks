@@ -1,0 +1,91 @@
+{% extends 'registration/base.html' %}
+{% load thumbnail %}
+{% load static %}
+
+
+{% block title %}Subscribers{% endblock title %}
+
+{% block page_header %}
+    <h2>Subscribers</h2>
+{% endblock page_header %}
+{% block content %}
+    <style>
+    .followers {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-left: 225px;
+    }
+    .username{
+        position: relative;
+        bottom: 60px;
+        left: 120px;
+    }
+    .username-photo {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        top: 10px;
+        left: 10px;
+    }
+    .border-follow {
+        margin-bottom:20px;
+        border:2px solid #fff;
+        border-radius:5px;
+        width: 650px;
+    }
+    </style>
+    <div class="followers">
+    {% if user.followers.all %}
+        {% for user in user.followers.all  %}
+            <div class="border-follow">
+                <a href="{{ user.get_absolute_url }}">
+                    {% if user.profile.profile_photo %}
+                        {% thumbnail user.profile.get_photo_url "100x100" as image %}
+                            <img class="username-photo" src="{{ image.url }}" alt="photo">
+                        {% endthumbnail %}
+                    {% else%}
+                        <img class="username-photo" src="{% static 'images/default.jpg' %}" alt="photo">
+                    {% endif %}
+                </a>
+                <div class="username">
+                    <a href="{{ user.get_absolute_url }}" class="title underline-one">
+                        {{ user.get_full_name }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h3 style="position: relative; right: 225px">There are no subscribers.</h3>
+    {% endif %}
+    </div>
+{%  endblock content %}
+
+{% block domready %}
+    $('a.button').on('click', function(e){
+    e.preventDefault();
+    $.post('{% url "user_follow" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok') {
+          var previous_action = $('a.button').data('action');
+
+          // toggle data-action
+          $('a.button').data('action',
+            previous_action == 'follow' ? 'unfollow' : 'follow');
+          // toggle link text
+          $('a.button').text(
+            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+          // update total followers
+          var previous_followers = parseInt(
+            $('span.count .total').text());
+          $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+        }
+      }
+    );
+    });
+{% endblock %}

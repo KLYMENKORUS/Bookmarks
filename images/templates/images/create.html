@@ -1,0 +1,21 @@
+{% extends 'registration/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Bookmark an image{% endblock %}
+{% block page_header %}
+    <h2><em>Bookmark an image</em></h2>
+{% endblock page_header%}
+
+{% block content %}
+    <div class="content-section">
+        <div class="media">
+            <div class="media-body">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% bootstrap_form form %}
+                    {% csrf_token %}
+                    <input class="button" type="submit" value="Bookmark it">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
