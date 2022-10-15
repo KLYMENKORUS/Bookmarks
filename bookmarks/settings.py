@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%(6!6(s258ka#co)r_4-z7f45%^lxk#2v+tatcu$9j=)ka%-r6"
+SECRET_KEY = "secret key"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -140,7 +140,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'klimenkoruslan11@gmail.com'
+EMAIL_HOST_USER = 'user@gmail.com'
 EMAIL_HOST_PASSWORD = 'tinjbgpuuvtedxpi'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -158,14 +158,14 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
 ]
 # Facebook
-SOCIAL_AUTH_FACEBOOK_KEY = '451804296898044'
-SOCIAL_AUTH_FACEBOOK_SECRET = '904daacd545266e75d0af7046ad5b5c1'
+SOCIAL_AUTH_FACEBOOK_KEY = 'facebook_key'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'facebook_secret'
 # Twitter
 SOCIAL_AUTH_TWITTER_KEY = 'XXX' # Twitter Consumer Key
 SOCIAL_AUTH_TWITTER_SECRET = 'XXX' # Twitter Consumer Secret
 # Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '541949441637-u9glejn8qsvn9v7ctlj2221vrie0ct60.apps.googleusercontent.com' # Google Consumer Key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Consumer Secret
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'XXX' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'XXX' # Google Consumer Secret
 
 CSRF_TRUSTED_ORIGINS = ['https://80bf-185-181-166-81.eu.ngrok.io']
 # Messages
